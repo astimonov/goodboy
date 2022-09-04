@@ -3,9 +3,8 @@
 
 #include "memory_interface.hpp"
 #include "random_access_memory.hpp"
+#include "stub_memory.hpp"
 
-#include <bits/c++config.h>
-#include <bits/stdint-uintn.h>
 #include <map>
 #include <tuple>
 
@@ -79,17 +78,17 @@ namespace Goodboy
         static constexpr Address HramEnd            = 0xFFFE;
         static constexpr Address IeEnd              = 0xFFFF;
 
-        RandomAccessMemory mRomBank00   = RandomAccessMemory(GetMappingSize(RomBank00Start, RomBank00End));
-        RandomAccessMemory mRomBank01   = RandomAccessMemory(GetMappingSize(RomBank01Start, RomBank01End));
-        RandomAccessMemory mVideoRam    = RandomAccessMemory(GetMappingSize(VideoRamStart, VideoRamEnd));
-        RandomAccessMemory mExternalRam = RandomAccessMemory(GetMappingSize(ExternalRamStart, ExternalRamEnd));
-        RandomAccessMemory mWram0       = RandomAccessMemory(GetMappingSize(Wram0Start, Wram0End));
-        RandomAccessMemory mWram1       = RandomAccessMemory(GetMappingSize(Wram1Start, Wram1End));
-        RandomAccessMemory mOam         = RandomAccessMemory(GetMappingSize(OamStart, OamEnd));
-        RandomAccessMemory mNotUsable   = RandomAccessMemory(GetMappingSize(NotUsableStart, NotUsableEnd));
-        RandomAccessMemory mIo          = RandomAccessMemory(GetMappingSize(IoStart, IoEnd));
-        RandomAccessMemory mHram        = RandomAccessMemory(GetMappingSize(HramStart, HramEnd));
-        RandomAccessMemory mIe          = RandomAccessMemory(GetMappingSize(IeStart, IeEnd));
+        RandomAccessMemory mRomBank00   = RandomAccessMemory(GetMappingSize(RomBank00Start,     RomBank00End));
+        RandomAccessMemory mRomBank01   = RandomAccessMemory(GetMappingSize(RomBank01Start,     RomBank01End));
+        RandomAccessMemory mVideoRam    = RandomAccessMemory(GetMappingSize(VideoRamStart,      VideoRamEnd));
+        RandomAccessMemory mExternalRam = RandomAccessMemory(GetMappingSize(ExternalRamStart,   ExternalRamEnd));
+        RandomAccessMemory mWram0       = RandomAccessMemory(GetMappingSize(Wram0Start,         Wram0End));
+        RandomAccessMemory mWram1       = RandomAccessMemory(GetMappingSize(Wram1Start,         Wram1End));
+        RandomAccessMemory mOam         = RandomAccessMemory(GetMappingSize(OamStart,           OamEnd));
+        RandomAccessMemory mIo          = RandomAccessMemory(GetMappingSize(IoStart,            IoEnd));
+        RandomAccessMemory mHram        = RandomAccessMemory(GetMappingSize(HramStart,          HramEnd));
+        RandomAccessMemory mIe          = RandomAccessMemory(GetMappingSize(IeStart,            IeEnd));
+        StubMemory         mStubMemory  = StubMemory();
 
         std::vector<Mapping> mMapping =
         {
@@ -102,7 +101,7 @@ namespace Goodboy
             {EchoRam0Start,     EchoRam0End,    AccessMode::Read,                       mWram0},
             {EchoRam1Start,     EchoRam1End,    AccessMode::Read,                       mWram1},
             {OamStart,          OamEnd,         AccessMode::Read | AccessMode::Write,   mOam},
-            {NotUsableStart,    NotUsableEnd,   AccessMode::None,                       mNotUsable},
+            {NotUsableStart,    NotUsableEnd,   AccessMode::None,                       mStubMemory},
             {IoStart,           IoEnd,          AccessMode::Read | AccessMode::Write,   mIo},
             {HramStart,         HramEnd,        AccessMode::Read | AccessMode::Write,   mHram},
             {IeStart,           IeEnd,          AccessMode::Read | AccessMode::Write,   mIe}
