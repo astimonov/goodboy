@@ -6,7 +6,6 @@
 #include "stub_memory.hpp"
 
 #include <map>
-#include <tuple>
 #include <type_traits>
 
 namespace Goodboy
@@ -30,15 +29,18 @@ namespace Goodboy
                                        static_cast<std::underlying_type_t<AccessMode>>(b));
     }
 
-    using Mapping = std::tuple<Address, Address, AccessMode, MemoryInterface&>;
+    struct Mapping
+    {
+        Address startAddress;
+        Address endAddress;
+        AccessMode accessMode;
+        MemoryInterface& memory;
+    };
 
     class MemoryController : public MemoryInterface
     {
     public:
-        MemoryController()
-        {
-
-        }
+        MemoryController() = default;
 
         ~MemoryController() = default;
 
@@ -112,7 +114,7 @@ namespace Goodboy
         Mapping mFaultMapping = {0, 0, AccessMode::None, mStubMemory};
 
         Mapping& GetMapping(Address address);
-        MemoryInterface& GetMemory(Address address, AccessMode accessMode);
+        Mapping& GetMapping(Address address, AccessMode accessMode);
     };
 }
 

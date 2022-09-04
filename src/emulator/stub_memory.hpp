@@ -9,6 +9,7 @@ namespace Goodboy
     {
     public:
         StubMemory() = default;
+
         ~StubMemory() = default;
 
         Byte Load(Address address) override

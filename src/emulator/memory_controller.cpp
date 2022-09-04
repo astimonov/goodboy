@@ -6,26 +6,28 @@ using namespace Goodboy;
 
 Byte MemoryController::Load(Address address)
 {
-    return GetMemory(address, AccessMode::Read).Load(address);
+    auto& mapping = GetMapping(address, AccessMode::Read);
+    return mapping.memory.Load(address - mapping.startAddress);
 }
 
 void MemoryController::Store(Address address, Byte value)
 {
-    GetMemory(address, AccessMode::Write).Store(address, value);
+    auto& mapping = GetMapping(address, AccessMode::Write);
+    mapping.memory.Store(address - mapping.startAddress, value);
 }
 
 Mapping& MemoryController::GetMapping(Address address)
 {
     for (auto& mapping : mMapping)
-        if ((address >= std::get<0>(mapping)) && (address <= std::get<1>(mapping)))
+        if ((address >= mapping.startAddress) && (address <= mapping.endAddress))
             return mapping;
     return mFaultMapping;
 }
 
-MemoryInterface& MemoryController::GetMemory(Address address, AccessMode accessMode)
+Mapping& MemoryController::GetMapping(Address address, AccessMode accessMode)
 {
-    auto mapping = GetMapping(address);
-    if ((accessMode & std::get<2>(mapping)) == accessMode)
-        return std::get<3>(mapping);
-    return std::get<3>(mFaultMapping);
+    auto& mapping = GetMapping(address);
+    if ((accessMode & mapping.accessMode) == accessMode)
+        return mapping;
+    return mapping;
 }
