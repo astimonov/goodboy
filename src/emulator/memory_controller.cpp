@@ -29,5 +29,5 @@ Mapping& MemoryController::GetMapping(Address address, AccessMode accessMode)
     auto& mapping = GetMapping(address);
     if ((accessMode & mapping.accessMode) == accessMode)
         return mapping;
-    return mapping;
+    return mFaultMapping;
 }
