@@ -5,8 +5,19 @@ project(GoodBoy)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(EMULATOR_SRC
+    src/emulator/cpu.hpp
+    src/emulator/cpu.cpp
+    src/emulator/memory_interface.hpp
+    src/emulator/random_access_memory.hpp
+    src/emulator/types.hpp
+)
+
+add_library(emulator STATIC ${EMULATOR_SRC})
+
 set(MAIN_EXECUTABLE_SRC
     src/executable/main.cpp
 )
 
-add_executable(GoodBoy ${MAIN_EXECUTABLE_SRC})
+add_executable(goodboy ${MAIN_EXECUTABLE_SRC})
+target_link_libraries(goodboy emulator)
