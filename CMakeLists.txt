@@ -8,8 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(EMULATOR_SRC
     src/emulator/cpu.hpp
     src/emulator/cpu.cpp
+    src/emulator/memory_controller.hpp
+    src/emulator/memory_controller.cpp
     src/emulator/memory_interface.hpp
     src/emulator/random_access_memory.hpp
+    src/emulator/stub_memory.hpp
     src/emulator/types.hpp
 )
 

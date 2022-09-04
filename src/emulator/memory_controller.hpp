@@ -7,6 +7,7 @@
 
 #include <map>
 #include <tuple>
+#include <type_traits>
 
 namespace Goodboy
 {
@@ -19,7 +20,14 @@ namespace Goodboy
 
     constexpr AccessMode operator|(AccessMode a, AccessMode b)
     {
-        return static_cast<AccessMode>(static_cast<int>(a) | static_cast<int>(b));
+        return static_cast<AccessMode>(static_cast<std::underlying_type_t<AccessMode>>(a) |
+                                       static_cast<std::underlying_type_t<AccessMode>>(b));
+    }
+
+    constexpr AccessMode operator&(AccessMode a, AccessMode b)
+    {
+        return static_cast<AccessMode>(static_cast<std::underlying_type_t<AccessMode>>(a) &
+                                       static_cast<std::underlying_type_t<AccessMode>>(b));
     }
 
     using Mapping = std::tuple<Address, Address, AccessMode, MemoryInterface&>;
@@ -34,15 +42,9 @@ namespace Goodboy
 
         ~MemoryController() = default;
 
-        Byte Load(Address address) override
-        {
-            return mRomBank00.Load(address);
-        }
+        Byte Load(Address address) override;
 
-        void Store(Address address, Byte value) override
-        {
-            mRomBank00.Store(address, value);
-        }
+        void Store(Address address, Byte value) override;
 
     private:
         static constexpr std::size_t GetMappingSize(Address start, Address end)
@@ -106,6 +108,11 @@ namespace Goodboy
             {HramStart,         HramEnd,        AccessMode::Read | AccessMode::Write,   mHram},
             {IeStart,           IeEnd,          AccessMode::Read | AccessMode::Write,   mIe}
         };
+
+        Mapping mFaultMapping = {0, 0, AccessMode::None, mStubMemory};
+
+        Mapping& GetMapping(Address address);
+        MemoryInterface& GetMemory(Address address, AccessMode accessMode);
     };
 }
 
