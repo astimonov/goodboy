@@ -31,6 +31,7 @@ target_include_directories(goodboy PRIVATE src/emulator)
 
 set(TESTS_SRC
     src/tests/memory_controller.cpp
+    src/tests/register.cpp
 )
 
 enable_testing()

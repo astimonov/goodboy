@@ -45,15 +45,16 @@ namespace Goodboy
             return mHigh.Value();
         }
 
-        D operator *()
+        D operator *() const
         {
             return (*mHigh << std::numeric_limits<T>::digits) | *mLow;
         }
 
-        void Set(T high, T low)
+        D Set(T high, T low)
         {
             *mHigh = high;
             *mLow = low;
+            return **this;
         }
     private:
         Register<T>& mHigh;
@@ -77,6 +78,36 @@ namespace Goodboy
         bool Z(bool value)
         {
             return SetFlag(mRegister.Low(), ZeroFlagBit, value);
+        }
+
+        bool N()
+        {
+            return GetFlag(mRegister.Low(), SubstractionFlagBit);
+        }
+
+        bool N(bool value)
+        {
+            return SetFlag(mRegister.Low(), SubstractionFlagBit, value);
+        }
+
+        bool H()
+        {
+            return GetFlag(mRegister.Low(), HalfCarryFlagBit);
+        }
+
+        bool H(bool value)
+        {
+            return SetFlag(mRegister.Low(), HalfCarryFlagBit, value);
+        }
+
+        bool C()
+        {
+            return GetFlag(mRegister.Low(), CarryFlagBit);
+        }
+
+        bool C(bool value)
+        {
+            return SetFlag(mRegister.Low(), CarryFlagBit, value);
         }
 
     private:
@@ -103,6 +134,8 @@ namespace Goodboy
 
             return value;
         }
+
+        friend class FlagRegisterTestWrapper;
     };
 }
 
