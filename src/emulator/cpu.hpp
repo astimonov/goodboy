@@ -22,7 +22,7 @@ namespace Goodboy
         }
 
     private:
-        MemoryController mMemoryController = MemoryController();
+        MemoryController mMemoryController;
         Register<Byte> A, F,
                        B, C,
                        D, E,

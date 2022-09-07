@@ -51,10 +51,16 @@ namespace Goodboy
 
         void Store(Address address, Byte value) override;
 
+        Byte& operator[](Address address) override;
+
+        const Byte operator[](Address address) const override;
+
     private:
         static constexpr std::size_t GetMappingSize(Address start, Address end)
         {
-            return static_cast<std::size_t>(end) - static_cast<std::size_t>(start);
+            return static_cast<std::size_t>(end)
+                 - static_cast<std::size_t>(start)
+                 + std::size_t(1);
         }
 
         static constexpr Address RomBank00Start     { 0x0000 };
@@ -117,7 +123,11 @@ namespace Goodboy
         Mapping mFaultMapping { 0, 0, AccessMode::None, mStubMemory };
 
         Mapping& GetMapping(Address address);
+        const Mapping& GetMapping(Address address) const;
         Mapping& GetMapping(Address address, AccessMode accessMode);
+        const Mapping& GetMapping(Address address, AccessMode accessMode) const;
+
+        friend class MemoryControllerTestWrapper;
     };
 }
 

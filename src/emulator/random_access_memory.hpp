@@ -28,6 +28,16 @@ namespace Goodboy
             mMemory[address] = value;
         }
 
+        Byte& operator[](Address address) override
+        {
+            return mMemory[address];
+        }
+
+        const Byte operator[](Address address) const override
+        {
+            return mMemory[address];
+        }
+
     private:
         std::vector<Byte> mMemory;
     };

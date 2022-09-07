@@ -11,8 +11,8 @@ namespace Goodboy
         virtual ~MemoryInterface() = default;
         virtual Byte Load(Address address) = 0;
         virtual void Store(Address address, Byte value) = 0;
-
-        // TODO: Overload [] operator
+        virtual Byte& operator[](Address address) = 0;
+        virtual const Byte operator[](Address address) const = 0;
     };
 }
 

@@ -14,13 +14,26 @@ namespace Goodboy
 
         Byte Load(Address address) override
         {
-            return 0xA5;
+            return mValue;
         }
 
         void Store(Address address, Byte value) override
         {
-
+            mValue = value;
         }
+
+        Byte& operator[](Address address) override
+        {
+            return mValue;
+        }
+
+        const Byte operator[](Address address) const override
+        {
+            return mValue;
+        }
+
+    private:
+        Byte mValue {0xA5};
     };
 }
 
